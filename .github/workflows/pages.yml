@@ -1,24 +1,37 @@
-<script type="text/plain" id="pages.yml">
 name: Deploy Pages
+
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ main ]       # 默认分支
+  workflow_dispatch:         # 允许手动触发
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Upload artifact
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact (root)
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: .             # 直接发布仓库根目录：index.html / apps.json / handlers.js 都在这里
+
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
-</script>
