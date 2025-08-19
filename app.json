@@ -1,0 +1,57 @@
+<script type="application/json" id="apps.json">
+{
+  "today_count": 5,
+  "apps": [
+    {
+      "slug": "title-booster",
+      "name": "标题放大器",
+      "category": "writing",
+      "description": "一句话生成 3 种吸睛标题（新闻风/科普风/悬念风）",
+      "inputs": ["text"],
+      "presets": ["新闻风","科普风","悬念风"],
+      "handler": "titleBoosterV1",
+      "placeholder": "如：AI 赋能教学工作坊"
+    },
+    {
+      "slug": "tone-switch",
+      "name": "口吻转换（官方/轻松/技术）",
+      "category": "writing",
+      "description": "同一句话换 3 种口吻，直接复制可用",
+      "inputs": ["text"],
+      "presets": ["官方","轻松","技术"],
+      "handler": "toneSwitchV1",
+      "placeholder": "如：请明天前提交作业"
+    },
+    {
+      "slug": "todo-priority",
+      "name": "待办三优先级",
+      "category": "work",
+      "description": "一句待办 → P0/P1/P2 与建议截止语",
+      "inputs": ["text"],
+      "presets": ["默认","含截止日","含负责人"],
+      "handler": "todoPriorityV1",
+      "placeholder": "如：整理明天汇报的 5 张图"
+    },
+    {
+      "slug": "date-normalizer",
+      "name": "时间表达标准化",
+      "category": "time",
+      "description": "把“下周三下午”这类自然语句变为 YYYY-MM-DD HH:mm",
+      "inputs": ["text"],
+      "presets": ["默认","下午 14:00","上午 09:00"],
+      "handler": "dateNormalizeV1",
+      "placeholder": "如：下周三下午开会"
+    },
+    {
+      "slug": "bulletize",
+      "name": "一键分点",
+      "category": "structure",
+      "description": "把一大句拆成 3–5 条要点（• 列表）",
+      "inputs": ["text"],
+      "presets": ["默认","更简洁","更完整"],
+      "handler": "bulletizeV1",
+      "placeholder": "如：本周完成数据清洗模型上线写说明"
+    }
+  ]
+}
+</script>
