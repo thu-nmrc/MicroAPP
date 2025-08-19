@@ -1,4 +1,3 @@
-<script type="application/json" id="backlog.json">
 {
   "queue": [
     { "slug":"title-booster-edu", "name":"标题放大器·教育版", "category":"writing", "description":"教育/培训场景模板更贴合", "inputs":["text"], "presets":["新闻风","科普风","悬念风"], "handler":"titleBoosterV1", "placeholder":"如：课堂参与度提升方案" },
@@ -15,4 +14,3 @@
     { "slug":"bulletize-brief", "name":"一键分点·简洁", "category":"structure", "description":"更短更干练的要点", "inputs":["text"], "presets":["默认","更简洁","更完整"], "handler":"bulletizeV1", "placeholder":"如：复盘本周项目" }
   ]
 }
-</script>
