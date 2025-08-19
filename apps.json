@@ -6,8 +6,14 @@
       "name": "标题放大器",
       "category": "writing",
       "description": "一句话生成 3 种吸睛标题（新闻风/科普风/悬念风）",
-      "inputs": ["text"],
-      "presets": ["新闻风", "科普风", "悬念风"],
+      "inputs": [
+        "text"
+      ],
+      "presets": [
+        "新闻风",
+        "科普风",
+        "悬念风"
+      ],
       "handler": "titleBoosterV1",
       "placeholder": "如：AI 赋能教学工作坊"
     },
@@ -16,8 +22,14 @@
       "name": "口吻转换（官方/轻松/技术）",
       "category": "writing",
       "description": "同一句话换 3 种口吻，直接复制可用",
-      "inputs": ["text"],
-      "presets": ["官方", "轻松", "技术"],
+      "inputs": [
+        "text"
+      ],
+      "presets": [
+        "官方",
+        "轻松",
+        "技术"
+      ],
       "handler": "toneSwitchV1",
       "placeholder": "如：请明天前提交作业"
     },
@@ -26,8 +38,14 @@
       "name": "待办三优先级",
       "category": "work",
       "description": "一句待办 → P0/P1/P2 与建议截止语",
-      "inputs": ["text"],
-      "presets": ["默认", "含截止日", "含负责人"],
+      "inputs": [
+        "text"
+      ],
+      "presets": [
+        "默认",
+        "含截止日",
+        "含负责人"
+      ],
       "handler": "todoPriorityV1",
       "placeholder": "如：整理明天汇报的 5 张图"
     },
@@ -36,8 +54,14 @@
       "name": "时间表达标准化",
       "category": "time",
       "description": "把“下周三下午”这类自然语句变为 YYYY-MM-DD HH:mm",
-      "inputs": ["text"],
-      "presets": ["默认", "下午 14:00", "上午 09:00"],
+      "inputs": [
+        "text"
+      ],
+      "presets": [
+        "默认",
+        "下午 14:00",
+        "上午 09:00"
+      ],
       "handler": "dateNormalizeV1",
       "placeholder": "如：下周三下午开会"
     },
@@ -46,10 +70,92 @@
       "name": "一键分点",
       "category": "structure",
       "description": "把一大句拆成 3–5 条要点（• 列表）",
-      "inputs": ["text"],
-      "presets": ["默认", "更简洁", "更完整"],
+      "inputs": [
+        "text"
+      ],
+      "presets": [
+        "默认",
+        "更简洁",
+        "更完整"
+      ],
       "handler": "bulletizeV1",
       "placeholder": "如：本周完成数据清洗模型上线写说明"
+    },
+    {
+      "slug": "title-booster-edu",
+      "name": "标题放大器·教育版",
+      "category": "writing",
+      "description": "教育/培训场景模板更贴合",
+      "inputs": [
+        "text"
+      ],
+      "presets": [
+        "新闻风",
+        "科普风",
+        "悬念风"
+      ],
+      "handler": "titleBoosterV1",
+      "placeholder": "如：课堂参与度提升方案"
+    },
+    {
+      "slug": "title-booster-research",
+      "name": "标题放大器·科研版",
+      "category": "writing",
+      "description": "论文/报告题目优化",
+      "inputs": [
+        "text"
+      ],
+      "presets": [
+        "新闻风",
+        "科普风",
+        "悬念风"
+      ],
+      "handler": "titleBoosterV1",
+      "placeholder": "如：多模态表示学习"
+    },
+    {
+      "slug": "tone-switch-marketing",
+      "name": "口吻转换·营销版",
+      "category": "writing",
+      "description": "更自然的宣传口吻",
+      "inputs": [
+        "text"
+      ],
+      "presets": [
+        "官方",
+        "轻松",
+        "技术"
+      ],
+      "handler": "toneSwitchV1",
+      "placeholder": "如：新品发布直播今晚八点"
+    },
+    {
+      "slug": "keyword-expand",
+      "name": "关键词扩展（同义/上位/下位）",
+      "category": "research",
+      "description": "围绕主题给出相关词域",
+      "inputs": [
+        "text"
+      ],
+      "presets": [
+        "默认"
+      ],
+      "handler": "keywordExpandV1",
+      "placeholder": "如：生成式AI"
+    },
+    {
+      "slug": "three-questions",
+      "name": "三问法（现象/机制/对策）",
+      "category": "research",
+      "description": "主题一键转 3 个研究问题",
+      "inputs": [
+        "text"
+      ],
+      "presets": [
+        "默认"
+      ],
+      "handler": "threeQuestionsV1",
+      "placeholder": "如：高校AI教学"
     }
   ]
 }
