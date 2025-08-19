@@ -5,25 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>THU AI · Shen Lab 微应用</title>
   <style>
-    :root { --bg:#0b1020; --card:#121a34; --muted:#8ea0c0; --text:#e6eeff; --accent:#6aa1ff; --accent2:#4de3c1; }
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0b1020,#0a0f1e 60%);
-      color:var(--text);}
+    :root { --bg:#0b1020; --card:#121a34; --muted:#8ea0c0; --text:#e6eeff; --accent:#7c2e98; --accent2:#d2b6ff; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#140a1f,#0f0a1f 60%);color:var(--text);}
     header{padding:28px 20px 8px;max-width:1040px;margin:0 auto}
     h1{margin:0 0 6px;font-size:26px;letter-spacing:.2px}
     .sub{color:var(--muted);font-size:14px}
     .toolbar{display:flex;gap:12px;align-items:center;margin-top:12px}
-    .badge{padding:4px 8px;background:rgba(106,161,255,.12);border:1px solid rgba(106,161,255,.35);border-radius:999px;font-size:12px;color:#cfe0ff}
+    .badge{padding:4px 8px;background:rgba(124,46,152,.12);border:1px solid rgba(210,182,255,.35);border-radius:999px;font-size:12px;color:#e9dfff}
     main{padding:14px 20px 60px;max-width:1040px;margin:0 auto}
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-    .card{background:linear-gradient(180deg,rgba(18,26,52,.9),rgba(12,18,38,.95));border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;box-shadow:0 6px 24px rgba(0,0,0,.25);display:flex;flex-direction:column;min-height:170px}
+    .card{background:linear-gradient(180deg,rgba(30,20,52,.9),rgba(18,12,40,.95));border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;box-shadow:0 6px 24px rgba(0,0,0,.25);display:flex;flex-direction:column;min-height:170px}
     .card h3{margin:4px 0 8px;font-size:16px}
     .card p{margin:0 0 12px;color:var(--muted);font-size:13px;line-height:1.35}
-    .chip{font-size:11px;color:#b9c8e9;border:1px dashed rgba(185,200,233,.35);padding:2px 6px;border-radius:999px;display:inline-block;margin-bottom:8px}
+    .chip{font-size:11px;color:#c9bfe6;border:1px dashed rgba(185,200,233,.35);padding:2px 6px;border-radius:999px;display:inline-block;margin-bottom:8px}
     .row{margin-top:auto;display:flex;gap:8px}
     button{appearance:none;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer;font-size:13px;}
     button.primary{border-color:transparent;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#08131e;font-weight:600}
     button:disabled{opacity:.5;cursor:not-allowed}
-
     /* Modal */
     dialog{border:none;border-radius:16px;padding:0;background:linear-gradient(180deg,#0d152c,#0b1426);color:var(--text);width:min(680px,92vw)}
     .modal{padding:18px}
@@ -39,33 +38,27 @@
     .result .actions{display:flex;gap:8px;margin-top:8px}
     .foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
     .hint{font-size:12px;color:#a8b7d6}
-  .brand{display:flex;align-items:center;gap:10px}.brand svg{width:26px;height:26px;flex:0 0 26px} .brand{display:flex;align-items:center;gap:10px}.brand svg{width:26px;height:26px;flex:0 0 26px} </style>
-<style>
-/* THU 紫主题增强（覆盖默认变量与背景） */
-:root { --accent:#7c2e98; --accent2:#d2b6ff; }
-body{background:linear-gradient(180deg,#140a1f,#0f0a1f 60%);} 
-.card{background:linear-gradient(180deg,rgba(30,20,52,.9),rgba(18,12,40,.95));}
-footer{border-top:1px solid rgba(255,255,255,.08);color:#aeb6d8;padding:16px 20px;max-width:1040px;margin:0 auto;font-size:12px}
-footer .row{display:flex;gap:10px;flex-wrap:wrap}
-</style>
-<style>
-/* THU 紫主题增强（覆盖默认变量与背景） */
-:root { --accent:#7c2e98; --accent2:#d2b6ff; }
-body{background:linear-gradient(180deg,#140a1f,#0f0a1f 60%);} 
-.card{background:linear-gradient(180deg,rgba(30,20,52,.9),rgba(18,12,40,.95));}
-footer{border-top:1px solid rgba(255,255,255,.08);color:#aeb6d8;padding:16px 20px;max-width:1040px;margin:0 auto;font-size:12px}
-footer .row{display:flex;gap:10px;flex-wrap:wrap}
-</style>
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand svg{width:26px;height:26px;flex:0 0 26px}
+    footer{border-top:1px solid rgba(255,255,255,.08);color:#aeb6d8;padding:16px 20px;max-width:1040px;margin:0 auto;font-size:12px}
+    footer .row{display:flex;gap:10px;flex-wrap:wrap}
+  </style>
 </head>
 <body>
   <header>
-    <div class="brand"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#6aa1ff"/><stop offset="1" stop-color="#4de3c1"/></linearGradient></defs><path d="M12 2l7.5 4.3v11.4L12 22l-7.5-4.3V6.3L12 2z" fill="url(#g)" opacity=".9"/></svg><h1>THU AI · Shen Lab 微应用（零门槛）</h1></div>
+    <div class="brand">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#6aa1ff"/><stop offset="1" stop-color="#4de3c1"/></linearGradient></defs>
+        <path d="M12 2l7.5 4.3v11.4L12 22l-7.5-4.3V6.3L12 2z" fill="url(#g)" opacity=".9"/>
+      </svg>
+      <h1>THU AI · Shen Lab 微应用（零门槛）</h1>
+    </div>
     <div class="sub">一句话/点按钮即可使用 · 无上传、无账号、无密钥 · 纯前端运行</div>
     <div class="toolbar"><span class="badge" id="badge-new">今日新增 · 0</span><span class="badge">开源 · GitHub Pages</span></div>
   </header>
-  <main>
-    <div class="grid" id="grid"></div>
-  </main>
+
+  <main><div class="grid" id="grid"></div></main>
+
   <footer>
     <div class="row">
       <span>Shen Lab @ Tsinghua University · 清华大学沈阳教授团队</span>
@@ -111,33 +104,27 @@ footer .row{display:flex;gap:10px;flex-wrap:wrap}
         const res = await fetch('./apps.json',{cache:'no-store'});
         const data = await res.json();
         state.apps = data.apps || [];
-        document.getElementById('badge-new').textContent = `今日新增 · ${data.today_count ?? state.apps.length}`;
-        renderCards(); openByHash(); openByHash();
+        document.getElementById('badge-new').textContent =
+          `今日新增 · ${data.today_count ?? state.apps.length}`;
+        renderCards();
+        // 只注册一次 & 只调用一次
+        if (!window.__openByHash) {
+          window.__openByHash = function(){
+            const slug = decodeURIComponent(location.hash.replace(/^#/, ''));
+            if(!slug) return;
+            const app = state.apps.find(a=>a.slug===slug);
+            if(app) openModal(app);
+          };
+          window.addEventListener('hashchange', window.__openByHash);
+        }
+        window.__openByHash();
       }catch(e){
         console.error('加载 apps.json 失败：', e);
         grid.innerHTML = `<div class="card"><h3>加载失败</h3><p>无法读取 apps.json</p></div>`;
       }
     }
 
-    function openByHash(){
-  const slug = decodeURIComponent(location.hash.replace(/^#/, ''));
-  if(!slug) return;
-  const app = state.apps.find(a=>a.slug===slug);
-  if(app) openModal(app);
-}
-window.addEventListener('hashchange', openByHash);
-
-function openByHash(){
-  const slug = decodeURIComponent(location.hash.replace(/^#/, ''));
-  if(!slug) return;
-  const app = state.apps.find(a=>a.slug===slug);
-  if(app) openModal(app);
-}
-window.addEventListener('hashchange', openByHash);
-
-function renderCards(){
-
-
+    function renderCards(){
       grid.innerHTML = '';
       state.apps.forEach(app => {
         const card = document.createElement('div');
@@ -147,19 +134,25 @@ function renderCards(){
           <h3>${escapeHtml(app.name)}</h3>
           <p>${escapeHtml(app.description||'')}</p>
           <div class="row">
-            <button data-slug="${app.slug}" class="primary">打开</button>
-            <button onclick="navigator.clipboard.writeText(location.href+'#'+${JSON.stringify(app.slug)})">复制链接</button>
+            <button class="primary" data-slug="${app.slug}">打开</button>
+            <button class="copy-link" data-slug="${app.slug}">复制链接</button>
           </div>`;
-        card.querySelector('button.primary').addEventListener('click', ()=>openModal(app));
+        // 打开
+        card.querySelector('button.primary')
+            .addEventListener('click', ()=>openModal(app));
+        // 复制链接（不使用内联 onclick，避免引号冲突）
+        card.querySelector('.copy-link')
+            .addEventListener('click', (ev)=>{
+              const slug = ev.currentTarget.dataset.slug;
+              const url = `${location.origin}${location.pathname}#${slug}`;
+              navigator.clipboard.writeText(url);
+            });
         grid.appendChild(card);
       });
     }
 
     function openModal(app){
       try{ location.hash = app.slug; }catch(_){}
-
-      try{ location.hash = app.slug; }catch(_){}
-
       state.current = app; state.chosenPreset = null; resultsEl.innerHTML = '';
       dlgTitle.textContent = app.name; dlgDesc.textContent = app.description || '';
       inputArea.innerHTML = '';
@@ -219,7 +212,7 @@ function renderCards(){
 
     function showResults(lines){
       resultsEl.innerHTML = '';
-      lines.forEach((txt, idx)=>{
+      lines.forEach((txt)=>{
         const div = document.createElement('div');
         div.className = 'result';
         div.innerHTML = `<div>${escapeHtml(txt)}</div>`;
