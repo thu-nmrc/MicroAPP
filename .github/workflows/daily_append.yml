@@ -2,7 +2,7 @@ name: Daily Append Apps
 
 on:
   schedule:
-    - cron: '10 1 * * *'   # 每天 09:10 北京时间（UTC+8）
+    - cron: '10 1 * * *'      # 每天 北京时间 09:10
   workflow_dispatch:
 
 permissions:
@@ -12,23 +12,40 @@ jobs:
   append:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Append 3-5 apps from backlog
+      - name: Sanity check paths
+        run: |
+          test -f apps.json
+          test -f backlog.json
+          test -f .github/scripts/daily_append.mjs
+          node -v
+
+      - name: Append 3–5 apps
         run: node .github/scripts/daily_append.mjs
 
-      - name: Commit & push
+      - name: Show diff (optional)
+        run: git --no-pager diff --stat || true
+
+      - name: Commit & push if changed
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          if git diff --quiet; then
+            echo "No changes"; exit 0;
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add apps.json backlog.json
-          git commit -m "chore: daily append apps" || echo "No changes"
+          git commit -m "chore: daily append apps"
+          git pull --rebase origin ${{ github.ref_name }}
           git push
 
       - name: Trigger Pages deploy
