@@ -1,4 +1,3 @@
-<script type="module" id="handlers.js">
 export const AppHandlers = {
   /**
    * 标题放大器：preset = 新闻风 | 科普风 | 悬念风
@@ -335,4 +334,3 @@ function toWeekday(base, want, nextWeek){
 function fmt(d, hhmm){
   return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${hhmm}`;
 }
-</script>
