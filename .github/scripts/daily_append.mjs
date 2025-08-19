@@ -1,4 +1,3 @@
-<script type="text/plain" id="daily_append.mjs">
 import fs from 'fs';
 
 const apps = JSON.parse(fs.readFileSync('./apps.json','utf8'));
@@ -25,4 +24,3 @@ backlog.queue = backlog.queue.filter(x=>!picked.find(p=>p.slug===x.slug));
 fs.writeFileSync('./apps.json', JSON.stringify(apps, null, 2));
 fs.writeFileSync('./backlog.json', JSON.stringify(backlog, null, 2));
 console.log('Appended', n, 'items');
-</script>
