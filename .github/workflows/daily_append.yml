@@ -1,0 +1,26 @@
+<script type="text/plain" id="daily_append.yml">
+name: Daily Append Apps
+on:
+  schedule:
+    - cron: '10 1 * * *'   # 北京时间 09:10（UTC+8）
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  append:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Append 3-5 apps from backlog
+        run: node ./.github/scripts/daily_append.mjs
+      - name: Commit & push
+        run: |
+          git config user.name 'shenlab-bot'
+          git config user.email 'bot@users.noreply.github.com'
+          git add apps.json backlog.json
+          git commit -m "chore: daily append apps [skip ci]" || echo "No changes"
+          git push
+</script>
