@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>THU AI · Shen Lab 微应用</title>
+  <style>
+    :root { --bg:#0b1020; --card:#121a34; --muted:#8ea0c0; --text:#e6eeff; --accent:#6aa1ff; --accent2:#4de3c1; }
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0b1020,#0a0f1e 60%);
+      color:var(--text);}
+    header{padding:28px 20px 8px;max-width:1040px;margin:0 auto}
+    h1{margin:0 0 6px;font-size:26px;letter-spacing:.2px}
+    .sub{color:var(--muted);font-size:14px}
+    .toolbar{display:flex;gap:12px;align-items:center;margin-top:12px}
+    .badge{padding:4px 8px;background:rgba(106,161,255,.12);border:1px solid rgba(106,161,255,.35);border-radius:999px;font-size:12px;color:#cfe0ff}
+    main{padding:14px 20px 60px;max-width:1040px;margin:0 auto}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+    .card{background:linear-gradient(180deg,rgba(18,26,52,.9),rgba(12,18,38,.95));border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;box-shadow:0 6px 24px rgba(0,0,0,.25);display:flex;flex-direction:column;min-height:170px}
+    .card h3{margin:4px 0 8px;font-size:16px}
+    .card p{margin:0 0 12px;color:var(--muted);font-size:13px;line-height:1.35}
+    .chip{font-size:11px;color:#b9c8e9;border:1px dashed rgba(185,200,233,.35);padding:2px 6px;border-radius:999px;display:inline-block;margin-bottom:8px}
+    .row{margin-top:auto;display:flex;gap:8px}
+    button{appearance:none;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer;font-size:13px;}
+    button.primary{border-color:transparent;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#08131e;font-weight:600}
+    button:disabled{opacity:.5;cursor:not-allowed}
+
+    /* Modal */
+    dialog{border:none;border-radius:16px;padding:0;background:linear-gradient(180deg,#0d152c,#0b1426);color:var(--text);width:min(680px,92vw)}
+    .modal{padding:18px}
+    .modal header{padding:6px 2px 10px}
+    .modal h2{font-size:18px;margin:0 0 6px}
+    .muted{color:var(--muted);font-size:12px}
+    .inputs{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+    .presets{display:flex;flex-wrap:wrap;gap:8px}
+    .presets button{font-size:12px;padding:6px 8px;border-radius:999px}
+    textarea,input[type="text"]{width:100%;background:#0a1226;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:var(--text);padding:10px 12px;font-size:14px}
+    .results{display:grid;gap:10px;margin-top:14px}
+    .result{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px}
+    .result .actions{display:flex;gap:8px;margin-top:8px}
+    .foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+    .hint{font-size:12px;color:#a8b7d6}
+  .brand{display:flex;align-items:center;gap:10px}.brand svg{width:26px;height:26px;flex:0 0 26px} .brand{display:flex;align-items:center;gap:10px}.brand svg{width:26px;height:26px;flex:0 0 26px} </style>
+<style>
+/* THU 紫主题增强（覆盖默认变量与背景） */
+:root { --accent:#7c2e98; --accent2:#d2b6ff; }
+body{background:linear-gradient(180deg,#140a1f,#0f0a1f 60%);} 
+.card{background:linear-gradient(180deg,rgba(30,20,52,.9),rgba(18,12,40,.95));}
+footer{border-top:1px solid rgba(255,255,255,.08);color:#aeb6d8;padding:16px 20px;max-width:1040px;margin:0 auto;font-size:12px}
+footer .row{display:flex;gap:10px;flex-wrap:wrap}
+</style>
+<style>
+/* THU 紫主题增强（覆盖默认变量与背景） */
+:root { --accent:#7c2e98; --accent2:#d2b6ff; }
+body{background:linear-gradient(180deg,#140a1f,#0f0a1f 60%);} 
+.card{background:linear-gradient(180deg,rgba(30,20,52,.9),rgba(18,12,40,.95));}
+footer{border-top:1px solid rgba(255,255,255,.08);color:#aeb6d8;padding:16px 20px;max-width:1040px;margin:0 auto;font-size:12px}
+footer .row{display:flex;gap:10px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#6aa1ff"/><stop offset="1" stop-color="#4de3c1"/></linearGradient></defs><path d="M12 2l7.5 4.3v11.4L12 22l-7.5-4.3V6.3L12 2z" fill="url(#g)" opacity=".9"/></svg><h1>THU AI · Shen Lab 微应用（零门槛）</h1></div>
+    <div class="sub">一句话/点按钮即可使用 · 无上传、无账号、无密钥 · 纯前端运行</div>
+    <div class="toolbar"><span class="badge" id="badge-new">今日新增 · 0</span><span class="badge">开源 · GitHub Pages</span></div>
+  </header>
+  <main>
+    <div class="grid" id="grid"></div>
+  </main>
+  <footer>
+    <div class="row">
+      <span>Shen Lab @ Tsinghua University · 清华大学沈阳教授团队</span>
+      <span>微应用示范站（纯前端 · 无账号/无上传/无密钥）</span>
+      <span>© 2025 · Unofficial site for demo purposes</span>
+    </div>
+  </footer>
+  <footer>
+    <div class="row">
+      <span>Shen Lab @ Tsinghua University · 清华大学沈阳教授团队</span>
+      <span>微应用示范站（纯前端 · 无账号/无上传/无密钥）</span>
+      <span>© 2025 · Unofficial site for demo purposes</span>
+    </div>
+  </footer>
+
+  <dialog id="dlg">
+    <div class="modal">
+      <header>
+        <h2 id="dlgTitle">—</h2>
+        <div class="muted" id="dlgDesc"></div>
+      </header>
+      <section class="inputs" id="inputArea"></section>
+      <div class="foot">
+        <div class="hint">≤ 200 字符 · 可直接点下方预设</div>
+        <div>
+          <button id="btnRun" class="primary">生成结果</button>
+          <button id="btnClose">关闭</button>
+        </div>
+      </div>
+      <div class="results" id="results"></div>
+    </div>
+  </dialog>
+
+  <script type="module">
+    import { AppHandlers } from './handlers.js';
+
+    const grid = document.getElementById('grid');
+    const dlg = document.getElementById('dlg');
+    const dlgTitle = document.getElementById('dlgTitle');
+    const dlgDesc = document.getElementById('dlgDesc');
+    const inputArea = document.getElementById('inputArea');
+    const resultsEl = document.getElementById('results');
+    const btnRun = document.getElementById('btnRun');
+    const btnClose = document.getElementById('btnClose');
+
+    const state = { apps: [], current: null, chosenPreset: null };
+
+    async function loadApps(){
+      try{
+        const res = await fetch('./apps.json',{cache:'no-store'});
+        const data = await res.json();
+        state.apps = data.apps || [];
+        document.getElementById('badge-new').textContent = `今日新增 · ${data.today_count ?? state.apps.length}`;
+        renderCards(); openByHash(); openByHash();
+      }catch(e){
+        console.error('加载 apps.json 失败：', e);
+        grid.innerHTML = `<div class="card"><h3>加载失败</h3><p>无法读取 apps.json</p></div>`;
+      }
+    }
+
+    function openByHash(){
+  const slug = decodeURIComponent(location.hash.replace(/^#/, ''));
+  if(!slug) return;
+  const app = state.apps.find(a=>a.slug===slug);
+  if(app) openModal(app);
+}
+window.addEventListener('hashchange', openByHash);
+
+function openByHash(){
+  const slug = decodeURIComponent(location.hash.replace(/^#/, ''));
+  if(!slug) return;
+  const app = state.apps.find(a=>a.slug===slug);
+  if(app) openModal(app);
+}
+window.addEventListener('hashchange', openByHash);
+
+function renderCards(){
+
+
+      grid.innerHTML = '';
+      state.apps.forEach(app => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <span class="chip">${escapeHtml(app.category||'tool')}</span>
+          <h3>${escapeHtml(app.name)}</h3>
+          <p>${escapeHtml(app.description||'')}</p>
+          <div class="row">
+            <button data-slug="${app.slug}" class="primary">打开</button>
+            <button onclick="navigator.clipboard.writeText(location.href+'#'+${JSON.stringify(app.slug)})">复制链接</button>
+          </div>`;
+        card.querySelector('button.primary').addEventListener('click', ()=>openModal(app));
+        grid.appendChild(card);
+      });
+    }
+
+    function openModal(app){
+      try{ location.hash = app.slug; }catch(_){}
+
+      try{ location.hash = app.slug; }catch(_){}
+
+      state.current = app; state.chosenPreset = null; resultsEl.innerHTML = '';
+      dlgTitle.textContent = app.name; dlgDesc.textContent = app.description || '';
+      inputArea.innerHTML = '';
+
+      // 输入（可选）
+      if ((app.inputs||[]).includes('text')){
+        const label = document.createElement('label');
+        label.innerHTML = `<div class="muted" style="margin-bottom:6px">输入一句话（可留空）：</div>`;
+        const ta = document.createElement('textarea');
+        ta.rows = 3; ta.maxLength = 200; ta.placeholder = app.placeholder || '例如：为校友返校活动写个主题';
+        label.appendChild(ta);
+        inputArea.appendChild(label);
+      }
+
+      // 预设按钮（可选）
+      if ((app.presets||[]).length){
+        const wrap = document.createElement('div'); wrap.className = 'presets';
+        app.presets.forEach(p => {
+          const b = document.createElement('button'); b.textContent = p;
+          b.addEventListener('click', ()=>{ state.chosenPreset = p; highlightPreset(wrap, b); run(app); });
+          wrap.appendChild(b);
+        });
+        inputArea.appendChild(wrap);
+      }
+
+      btnRun.onclick = ()=> run(app);
+      btnClose.onclick = ()=> { dlg.close(); try{ history.replaceState(null,'', location.pathname); }catch(_){} };
+      dlg.showModal();
+    }
+
+    function highlightPreset(wrap, activeBtn){
+      [...wrap.children].forEach(ch => ch.style.outline = 'none');
+      activeBtn.style.outline = '2px solid var(--accent2)';
+    }
+
+    function getInputText(){
+      const ta = inputArea.querySelector('textarea');
+      return ta ? (ta.value || '').trim() : '';
+    }
+
+    function run(app){
+      const handler = AppHandlers[app.handler];
+      if (!handler){
+        return showResults([`找不到处理器：${app.handler}`]);
+      }
+      const text = getInputText();
+      const preset = state.chosenPreset || (app.presets?.[0] || '默认');
+      try{
+        const out = handler(text, preset, { now: new Date() }) || [];
+        const arr = Array.isArray(out) ? out : [String(out)];
+        showResults(arr);
+      }catch(err){
+        console.error(err);
+        showResults([`发生错误：${err.message||err}`]);
+      }
+    }
+
+    function showResults(lines){
+      resultsEl.innerHTML = '';
+      lines.forEach((txt, idx)=>{
+        const div = document.createElement('div');
+        div.className = 'result';
+        div.innerHTML = `<div>${escapeHtml(txt)}</div>`;
+        const actions = document.createElement('div'); actions.className = 'actions';
+        const btn = document.createElement('button'); btn.textContent = '复制';
+        btn.onclick = ()=> navigator.clipboard.writeText(txt);
+        actions.appendChild(btn); div.appendChild(actions);
+        resultsEl.appendChild(div);
+      });
+    }
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+    }
+
+    loadApps();
+  </script>
+</body>
+</html>
