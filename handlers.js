@@ -274,3 +274,65 @@ export const AppHandlers = {
   }
 
 };
+
+
+// ===== Helper Utils =====
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function pick3(arr){
+  const a=[...arr]; const out=[]; for(let i=0;i<3 && a.length;i++){ out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]); }
+  return out;
+}
+function pad(n){return String(n).padStart(2,'0')}
+function addDays(d, n){ const x=new Date(d); x.setDate(x.getDate()+n); return x; }
+
+function splitSmart(s){
+  // 按中文逗号/顿号/分号/and/、等切分
+  const tmp = s
+    .replace(/[;；、]/g,'，')
+    .replace(/\s*(和|以及|并且|然后|再|再就是|还有)\s*/g,'，')
+    .split(/[，,。]+/)
+    .map(t=>t.trim()).filter(Boolean);
+  // 去重与规整
+  return [...new Set(tmp)].slice(0,5);
+}
+
+function parseCnDateTime(text, base, preset){
+  const now = new Date(base);
+  const lower = text.toLowerCase();
+  const ampm = preset?.includes('上午')? '09:00' : preset?.includes('下午')? '14:00' : '10:00';
+
+  // 今天/明天/后天
+  if(/今天/.test(text)) return fmt(now, ampm);
+  if(/明天/.test(text)) return fmt(addDays(now,1), ampm);
+  if(/后天/.test(text)) return fmt(addDays(now,2), ampm);
+
+  // 本周/下周 + 星期几 + (上午/下午)
+  const m = text.match(/(下)?周([一二三四五六日天])(上午|下午)?/);
+  if(m){
+    const isNext = !!m[1];
+    const wd = '一二三四五六日天'.indexOf(m[2]); // 0..6
+    const want = wd===6?0:wd+1; // 周日/天->0
+    const target = toWeekday(now, want, isNext);
+    const t = m[3]?.includes('上')? '09:00' : m[3]?.includes('下')? '14:00' : ampm;
+    return fmt(target, t);
+  }
+
+  // 直接日期：YYYY-MM-DD 或 M/D
+  const md = text.match(/(\d{4})[-./](\d{1,2})[-./](\d{1,2})/);
+  if(md){ return `${md[1]}-${pad(+md[2])}-${pad(+md[3])} ${ampm}`; }
+  const md2 = text.match(/(\d{1,2})[./-](\d{1,2})/);
+  if(md2){ const y=now.getFullYear(); return `${y}-${pad(+md2[1])}-${pad(+md2[2])} ${ampm}`; }
+
+  // 回退：今天 + 默认时段
+  return fmt(now, ampm);
+}
+function toWeekday(base, want, nextWeek){
+  const d = new Date(base);
+  const cur = d.getDay();
+  let diff = want - cur; if (diff<=0 || nextWeek) diff += 7;
+  d.setDate(d.getDate()+diff); return d;
+}
+function fmt(d, hhmm){
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${hhmm}`;
+}
+</script>
