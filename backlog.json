@@ -1,48 +1,6 @@
 {
   "queue": [
     {
-      "slug": "email-subject-5",
-      "name": "邮件主题（5 选 1）",
-      "category": "writing",
-      "description": "一句诉求生成 5 个主题",
-      "inputs": [
-        "text"
-      ],
-      "presets": [
-        "默认"
-      ],
-      "handler": "emailSubjectV1",
-      "placeholder": "如：调研问卷请协助填写"
-    },
-    {
-      "slug": "summary-one-line",
-      "name": "一句话摘要简化",
-      "category": "writing",
-      "description": "把复杂句说清楚",
-      "inputs": [
-        "text"
-      ],
-      "presets": [
-        "默认"
-      ],
-      "handler": "oneSentenceSummaryV1",
-      "placeholder": "如：我们将利用AI工具提升互动"
-    },
-    {
-      "slug": "gratitude-card",
-      "name": "感谢卡一键写",
-      "category": "life",
-      "description": "正式/温暖/俏皮三版",
-      "inputs": [
-        "text"
-      ],
-      "presets": [
-        "默认"
-      ],
-      "handler": "gratitudeCardV1",
-      "placeholder": "如：评审老师"
-    },
-    {
       "slug": "opening-30s",
       "name": "会议开场白 30 秒",
       "category": "work",
