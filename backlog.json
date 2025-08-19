@@ -1,0 +1,18 @@
+<script type="application/json" id="backlog.json">
+{
+  "queue": [
+    { "slug":"title-booster-edu", "name":"标题放大器·教育版", "category":"writing", "description":"教育/培训场景模板更贴合", "inputs":["text"], "presets":["新闻风","科普风","悬念风"], "handler":"titleBoosterV1", "placeholder":"如：课堂参与度提升方案" },
+    { "slug":"title-booster-research", "name":"标题放大器·科研版", "category":"writing", "description":"论文/报告题目优化", "inputs":["text"], "presets":["新闻风","科普风","悬念风"], "handler":"titleBoosterV1", "placeholder":"如：多模态表示学习" },
+    { "slug":"tone-switch-marketing", "name":"口吻转换·营销版", "category":"writing", "description":"更自然的宣传口吻", "inputs":["text"], "presets":["官方","轻松","技术"], "handler":"toneSwitchV1", "placeholder":"如：新品发布直播今晚八点" },
+    { "slug":"keyword-expand", "name":"关键词扩展（同义/上位/下位）", "category":"research", "description":"围绕主题给出相关词域", "inputs":["text"], "presets":["默认"], "handler":"keywordExpandV1", "placeholder":"如：生成式AI" },
+    { "slug":"three-questions", "name":"三问法（现象/机制/对策）", "category":"research", "description":"主题一键转 3 个研究问题", "inputs":["text"], "presets":["默认"], "handler":"threeQuestionsV1", "placeholder":"如：高校AI教学" },
+    { "slug":"email-subject-5", "name":"邮件主题（5 选 1）", "category":"writing", "description":"一句诉求生成 5 个主题", "inputs":["text"], "presets":["默认"], "handler":"emailSubjectV1", "placeholder":"如：调研问卷请协助填写" },
+    { "slug":"summary-one-line", "name":"一句话摘要简化", "category":"writing", "description":"把复杂句说清楚", "inputs":["text"], "presets":["默认"], "handler":"oneSentenceSummaryV1", "placeholder":"如：我们将利用AI工具提升互动" },
+    { "slug":"gratitude-card", "name":"感谢卡一键写", "category":"life", "description":"正式/温暖/俏皮三版", "inputs":["text"], "presets":["默认"], "handler":"gratitudeCardV1", "placeholder":"如：评审老师" },
+    { "slug":"opening-30s", "name":"会议开场白 30 秒", "category":"work", "description":"三段开场白模板", "inputs":["text"], "presets":["默认"], "handler":"opening30sV1", "placeholder":"如：AI赋能教学" },
+    { "slug":"compare-one-line", "name":"对比结论一句话（A vs B）", "category":"structure", "description":"统一格式给结论", "inputs":["text"], "presets":["默认"], "handler":"compareConclusionV1", "placeholder":"如：轻量模型 vs 大模型" },
+    { "slug":"naming-kit", "name":"命名器（kebab/camel/snake）", "category":"work", "description":"三种风格 + 日期后缀", "inputs":["text"], "presets":["默认"], "handler":"namingV1", "placeholder":"如：AI teaching demo" },
+    { "slug":"bulletize-brief", "name":"一键分点·简洁", "category":"structure", "description":"更短更干练的要点", "inputs":["text"], "presets":["默认","更简洁","更完整"], "handler":"bulletizeV1", "placeholder":"如：复盘本周项目" }
+  ]
+}
+</script>
