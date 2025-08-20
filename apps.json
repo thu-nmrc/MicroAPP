@@ -261,11 +261,11 @@
       "slug": "zh-formatter",
       "name": "中文格式优化器",
       "category": "format",
-      "description": "把混合英文/半角标点/符号的文本转为中文排版风格；智能保留URL/代码片段。",
+      "description": "把混合英文/半角标点/符号的文本转为中文排版风格；自动统一标点、智能空格、并保留 URL/邮箱/代码。",
       "inputs": ["text"],
       "presets": ["标准（推荐）", "仅替换标点", "严格（指北）", "保守（不加空格）"],
       "handler": "zhFormatterV1",
-      "placeholder": "粘贴要优化的文本（支持多行，保留代码/URL/邮箱/Markdown链接）"
+      "placeholder": "粘贴要优化的长文本（支持多行；保留URL/邮箱/代码/Markdown链接）"
     }
   ]
 }
