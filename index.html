@@ -75,7 +75,7 @@
       </header>
       <section class="inputs" id="inputArea"></section>
       <div class="foot">
-        <div class="hint">≤ 200 字符 · 可直接点下方预设</div>
+        <div class="hint">支持长文本 · 可直接点下方预设</div>
         <div>
           <button id="btnRun" class="primary">生成结果</button>
           <button id="btnClose">关闭</button>
@@ -162,7 +162,8 @@
         const label = document.createElement('label');
         label.innerHTML = `<div class="muted" style="margin-bottom:6px">输入一句话（可留空）：</div>`;
         const ta = document.createElement('textarea');
-        ta.rows = 3; ta.maxLength = 200; ta.placeholder = app.placeholder || '例如：为校友返校活动写个主题';
+        ta.rows = 8;
+        ta.placeholder = app.placeholder || '粘贴要优化的长文本（支持多行；保留URL/邮箱/代码/Markdown链接）';
         label.appendChild(ta);
         inputArea.appendChild(label);
       }
