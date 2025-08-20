@@ -83,8 +83,7 @@ export const AppHandlers = {
     if (preset.includes('更完')) k = Math.min(5, Math.max(parts.length,3));
     const chosen = parts.slice(0,k);
     return chosen.map(x=> `• ${x}`);
-  }
-,
+  },
 
   /** 关键词扩展：同义 / 上位 / 下位 **/
   keywordExpandV1(text){
@@ -176,9 +175,7 @@ export const AppHandlers = {
       `camel：${camel}${ds}`,
       `snake：${snake}_${ds}`
     ];
-  }
-
-,
+  },
 
   /** 关键词扩展：同义 / 上位 / 下位 **/
   keywordExpandV1(text){
@@ -270,7 +267,116 @@ export const AppHandlers = {
       `camel：${camel}${ds}`,
       `snake：${snake}_${ds}`
     ];
+  },
+
+  // 中文格式优化器
+zhFormatterV1(text = '', preset = '标准', ctx = {}) {
+  // 选择模式
+  const mode = /仅|保守/.test(preset) ? 'punct' : (/严格|指北/.test(preset) ? 'strict' : 'standard');
+  let s = String(text || '').replace(/\r\n?/g, '\n').replace(/\u00A0/g, ' ');
+
+  // ---------- 1) 保护区：代码/链接/邮箱/Markdown 链接 ----------
+  const holders = [];
+  let hid = 0;
+  const keep = (re) => {
+    s = s.replace(re, (m) => {
+      const key = `\uE000${hid++}\uE000`; // 私用区占位
+      holders.push([key, m]);
+      return key;
+    });
+  };
+  keep(/```[\s\S]*?```/g);                   // 三引号代码块
+  keep(/`[^`]*`/g);                          // 行内代码
+  keep(/$begin:math:display$[^$end:math:display$]*\]$begin:math:text$[^)]+$end:math:text$/g);              // Markdown 链接 [text](url)
+  keep(/https?:\/\/[^\s)]+/g);               // 裸 URL
+  keep(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g); // 邮箱
+
+  // ---------- 2) 标点统一 ----------
+  const unifyPunct = (t) => {
+    // 省略号：... / …… → ……
+    t = t.replace(/(\.\s?){3,}/g, '……').replace(/…{2,}/g, '……');
+
+    // 破折号：-- / — → ——（中文两字线）
+    t = t.replace(/---?/g, '——').replace(/—(?!—)/g, '——');
+
+    // 引号：英文 → 中文（含英文缩写 don't → don’t）
+    t = smartQuotes(t);
+
+    // 括号：() → （）
+    t = t.replace(/$begin:math:text$/g, '（').replace(/$end:math:text$/g, '）');
+
+    // 逗号：不替换数字分组 1,234；其它 , → ，
+    t = t
+      .replace(/(^|[^\d]),(?=[^\d]|$)/g, '$1，')
+      .replace(/,(\s|$)/g, '，$1');
+
+    // 分号/问号/叹号
+    t = t.replace(/;/g, '；').replace(/\?/g, '？').replace(/!/g, '！');
+
+    // 冒号：先全部替换为中文，再把时间 12:34 还原
+    t = t.replace(/:/g, '：').replace(/(\d)：(\d{2})/g, '$1:$2');
+
+    // 句点：不替换小数/版本号尾部的小数点（URL/代码已保护）
+    // 把“非数字后跟 . 且后面不是数字”的点替换为中文句号
+    t = t.replace(/(^|[^0-9.])\.(?=[^\d]|$)/g, '$1。');
+
+    return t;
+  };
+
+  // ---------- 3) 空格规则 ----------
+  const spacing = (t, strong = false) => {
+    // 中英/数字相邻处加空格（两向）
+    t = t.replace(/([\u4e00-\u9fff])([A-Za-z0-9#@\$%\^&\*\-_=+\/\\|])/g, '$1 $2');
+    t = t.replace(/([A-Za-z0-9#@\$%\^&\*\-_=+\/\\|])([\u4e00-\u9fff])/g, '$1 $2');
+
+    // 中文标点前后空格清理：标点前不留空，开口标点后不留空
+    t = t.replace(/\s+([，。；：？！、》】）])/g, '$1');
+    t = t.replace(/([（【《])\s+/g, '$1');
+
+    // 多余空格压缩
+    t = t.replace(/[ \t]{2,}/g, ' ').replace(/ +\n/g, '\n');
+
+    if (strong) {
+      // 更严格：行尾空白清除、空行折叠到最多两行
+      t = t.replace(/[ \t]+$/gm, '');
+      t = t.replace(/\n{3,}/g, '\n\n');
+    }
+    return t;
+  };
+
+  // ---------- 4) 智能引号 ----------
+  function smartQuotes(t) {
+    let out = '', dqOpen = true, sqOpen = true;
+    for (let i = 0; i < t.length; i++) {
+      const ch = t[i], prev = t[i - 1], next = t[i + 1];
+      if (ch === '"') { out += dqOpen ? '“' : '”'; dqOpen = !dqOpen; continue; }
+      if (ch === "'") {
+        // 英文缩写 don't → don’t；否则按开/合引号对
+        if (/\w/.test(prev || '') && /\w/.test(next || '')) { out += '’'; continue; }
+        out += sqOpen ? '‘' : '’'; sqOpen = !sqOpen; continue;
+      }
+      out += ch;
+    }
+    return out;
   }
+
+  // 应用：标点
+  s = unifyPunct(s);
+
+  // 应用：空格（根据模式）
+  if (mode === 'standard') s = spacing(s, false);
+  if (mode === 'strict')   s = spacing(s, true);
+  // 'punct' 模式不加空格
+
+  // 行尾空白清理（幂等）
+  s = s.replace(/[ \t]+$/gm, '');
+
+  // ---------- 5) 还原保护区 ----------
+  for (const [key, val] of holders) s = s.split(key).join(val);
+
+  // 输出：单一结果更可控
+  return [s];
+};
 
 };
 
