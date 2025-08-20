@@ -376,7 +376,7 @@ zhFormatterV1(text = '', preset = '标准', ctx = {}) {
 
   // 输出：单一结果更可控
   return [s];
-};
+}
 
 };
 
